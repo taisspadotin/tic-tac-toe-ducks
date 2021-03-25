@@ -18,6 +18,8 @@ export const Button = styled.button`
      max-width: 200px;
      user-select: none;
      cursor: pointer;
+     margin-top: 5px;
+     margin-bottom: 5px;
      
 `
 
@@ -29,6 +31,7 @@ export const Intro = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 10px;
 `
 export const Title = styled.h2`
     color: #2c2c2c;
