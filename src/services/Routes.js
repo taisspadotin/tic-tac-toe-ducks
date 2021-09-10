@@ -9,7 +9,7 @@ class Routes extends Component{
 		<BrowserRouter>
 			<Switch>
 				<Route exact path="/" component={Introduction}/>
-				<Route exact path="/game" component={Game}/>
+				<Route path="/game" component={Game}/>
 				<Route path="*" component={() => <h1>Page not found</h1>} />
 			</Switch>
 		</BrowserRouter>

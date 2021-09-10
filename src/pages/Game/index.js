@@ -9,46 +9,55 @@ export default class Game extends LogicGame{
         this.state = {
             game: [
                 {
+                    id: 0,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 1,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 2,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 3,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 4,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 5,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 6,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 7,
                     checked: false,
                     value: '',
                     icon: ''
                 },
                 {
+                    id: 8,
                     checked: false,
                     value: '',
                     icon: ''
@@ -58,26 +67,19 @@ export default class Game extends LogicGame{
             visibleMessage: false,
             winner: '',
             velha: false,
-            winnerPosition: []
+            winnerPosition: [],
+            valor1: [],
+            valor2: [],
+            players: 1
         }
+        this.handleValue = this.handleValue.bind(this);
     }
 
-    handleValue = (position) => {
-        let { game, currentTurn } = this.state;
-        if(game[position].checked === false){
-            game[position].value = currentTurn;
-            game[position].checked = true;
-
-            if(currentTurn === 'x'){
-                currentTurn = 'o'
-                game[position].icon = <Close/>;
-            }
-            else{
-                currentTurn = 'x';
-                game[position].icon = <RadioButtonUnchecked/>;
-            }
-            this.setState({game, currentTurn});
-            this.verifyHit(game)
+    componentDidMount(){
+        var url = window.location.href;
+        var id = url.substring(url.lastIndexOf('/') + 1);
+        if(id === "2"){
+            this.setState({ players : 2 })
         }
     }
 

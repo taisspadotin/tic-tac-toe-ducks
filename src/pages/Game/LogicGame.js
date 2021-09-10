@@ -1,9 +1,11 @@
 import React from 'react';
+import { Close, RadioButtonUnchecked } from "@material-ui/icons";
 
 export default class LogicGame extends React.Component{
     
     /** Função que verifica se ouve algum acerto */
     verifyHit(game){
+        let { players } = this.state;
         let optionsChecked = game.filter(x => x.checked === true);
         let win = false;
         /** Verifica primeira linha */
@@ -56,7 +58,10 @@ export default class LogicGame extends React.Component{
                 this.setState({velha: true, visibleMessage: true})
             }
         }
-        
+
+        if(players === 2){
+            this.handleMove();
+        }
     }
 
     reload(){
@@ -74,5 +79,118 @@ export default class LogicGame extends React.Component{
             winnerPosition: [],
             velha: false
         });
+    }
+
+    handleValue = (position) => {
+        let { game, currentTurn, players } = this.state;
+        if(game[position].checked === false){
+            game[position].value = currentTurn;
+            game[position].checked = true;
+
+            if(currentTurn === 'x'){
+                currentTurn = 'o'
+                game[position].icon = <Close/>;
+            }
+            else{
+                currentTurn = 'x';
+                game[position].icon = <RadioButtonUnchecked/>;
+            }
+            console.log('aaaaaa', currentTurn)
+            this.setState({game, currentTurn}, () => {
+                this.verifyHit(game)
+            });   
+        }
+    }
+
+    /** Função responsavel pela movimentação de outra peça */
+    handleMove(){
+        let { game, currentTurn } = this.state;
+        console.log('game', game)
+        let oponente = currentTurn === 'x' ? 'o' : 'x';
+        /** verifica se ele vai fazer algum ponto */
+        let posChecked = game.filter(x => x.checked && x.value === currentTurn);
+        console.log('posChecked', posChecked)
+
+        /** verifica se o oponente vai fazer ponto */
+        
+        
+        this.validaPosicoes(game, [0, 3, 6], oponente);
+        this.validaPosicoes(game, [1, 4, 7], oponente);
+        this.validaPosicoes(game, [2, 5, 8], oponente);
+        this.validaPosicoes(game, [0, 4, 8], oponente);
+        this.validaPosicoes(game, [6, 4, 2], oponente);
+        this.validaPosicoes(game, [0, 1, 2], oponente);
+        this.validaPosicoes(game, [3, 4, 5], oponente);
+        this.validaPosicoes(game, [6, 7, 8], oponente);
+        
+        
+        /*let posCheckedOpo = game.filter(x => x.checked && x.value === oponente);
+        console.log('posCheckedOpo', posCheckedOpo)
+        let val3 = 0;
+        if(posCheckedOpo.lenght > 0){
+            let position = null;
+            if()
+        }*/
+
+        if(!game[4].checked){
+            this.handlePositionCheck(4);
+        }
+        else if(!game[2].check){
+            this.handlePositionCheck(2);
+        }
+        else if(!game[8].check){
+            this.handlePositionCheck(8);
+        }
+    }
+
+    validaPosicoes(game, arrayValores, oponente){
+        let val = {
+            posicao1: {
+                pos: [],
+                valor: 0
+            }
+        }
+        
+        if(game[arrayValores[0]].checked && game[arrayValores[0]].value === oponente){
+            val.posicao1.valor ++;
+            val.posicao1.pos.push(arrayValores[0]);
+        }
+        if(game[arrayValores[1]].checked && game[arrayValores[1]].value === oponente){
+            val.posicao1.valor ++;
+            val.posicao1.pos.push(arrayValores[1]);
+        }
+        if(game[arrayValores[2]].checked && game[arrayValores[2]].value === oponente){
+            val.posicao1.valor++;
+            val.posicao1.pos.push(arrayValores[2]);
+        }
+
+        if(val.posicao1.valor > 1){
+            /** oponente está perto de fazer ponto */
+            if(val.posicao1.pos.indexOf(arrayValores[0]) === -1){
+                this.handlePositionCheck(arrayValores[0]);
+            }
+            if(val.posicao1.pos.indexOf(arrayValores[1]) === -1){
+                this.handlePositionCheck(arrayValores[1]);
+            }
+            if(val.posicao1.pos.indexOf(arrayValores[2]) === -1){
+                this.handlePositionCheck(arrayValores[2]);
+            }
+            return;
+        }
+    }
+
+    handlePositionCheck(pos){
+        let { game, currentTurn } = this.state;
+        game[pos].checked = true;
+        game[pos].value = currentTurn;
+        if(currentTurn === 'x'){
+            currentTurn = 'o'
+            game[pos].icon = <Close/>;
+        }
+        else{
+            currentTurn = 'x';
+            game[pos].icon = <RadioButtonUnchecked/>;
+        }
+        this.setState({game, currentTurn});
     }
 }
