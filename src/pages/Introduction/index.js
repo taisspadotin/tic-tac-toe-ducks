@@ -28,7 +28,7 @@ class Introduction extends React.Component{
                         <Link to='/game' style={{width: '100%'}}>
                             <Button onClick={() => this.handlePlayer(1)}>Um jogador</Button>  
                         </Link>
-                        <Link to='/game/2' style={{width: '100%'}}>
+                        <Link to='/game' style={{width: '100%'}}>
                             <Button onClick={() => this.handlePlayer(2)}>Dois jogadores</Button>  
                         </Link>
                     </div>

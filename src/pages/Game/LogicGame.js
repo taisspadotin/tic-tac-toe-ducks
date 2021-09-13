@@ -3,7 +3,9 @@ import { Close, RadioButtonUnchecked } from "@material-ui/icons";
 
 export default class LogicGame extends React.Component{
     
-    /** Função que verifica se ouve algum acerto */
+    /** Função que verifica se ouve algum acerto 
+     * @param {object} game - objeto relacionado as posições do jogo
+    */
     verifyHit(game){
         let { players } = this.state;
         let optionsChecked = game.filter(x => x.checked === true);
@@ -64,6 +66,7 @@ export default class LogicGame extends React.Component{
         }
     }
 
+    /** Função responsável por começar um novo jogo */
     reload(){
         let { game } = this.state;
         game.map((g) => {
@@ -81,6 +84,9 @@ export default class LogicGame extends React.Component{
         });
     }
 
+    /** Lida com um valor escolhido em uma determinada posição
+     * @param {Int} position - posição no objeto
+     */
     handleValue = (position) => {
         let { game, currentTurn, players } = this.state;
         if(game[position].checked === false){
@@ -95,7 +101,6 @@ export default class LogicGame extends React.Component{
                 currentTurn = 'x';
                 game[position].icon = <RadioButtonUnchecked/>;
             }
-            console.log('aaaaaa', currentTurn)
             this.setState({game, currentTurn}, () => {
                 this.verifyHit(game)
             });   
@@ -109,8 +114,7 @@ export default class LogicGame extends React.Component{
         let oponente = currentTurn === 'x' ? 'o' : 'x';
         /** verifica se ele vai fazer algum ponto */
         let posChecked = game.filter(x => x.checked && x.value === currentTurn);
-        console.log('posChecked', posChecked)
-
+        
         /** verifica se o oponente vai fazer ponto */
         
         
@@ -143,6 +147,11 @@ export default class LogicGame extends React.Component{
         }
     }
 
+    /** Lida com a verificação de ganhos em um array
+     * @param {Object} game - array do jogo
+     * @param {Int32Array} arrayValores - array de inteiros contendo as posições
+     * @param {String} oponente - valor da vez
+     */
     validaPosicoes(game, arrayValores, oponente){
         let val = {
             posicao1: {
@@ -179,6 +188,9 @@ export default class LogicGame extends React.Component{
         }
     }
 
+    /** Lida com uma posição checada 
+     * @param {Int} pos - indice da posição
+    */
     handlePositionCheck(pos){
         let { game, currentTurn } = this.state;
         game[pos].checked = true;
