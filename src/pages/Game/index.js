@@ -1,9 +1,10 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { Body, Card, Container, Row, FullView, View, ButtonAgain, IconWinner, CurrentTurn } from './style';
 import { Close, RadioButtonUnchecked, Replay } from "@material-ui/icons";
 import LogicGame from './LogicGame';
 
-export default class Game extends LogicGame{
+class Game extends LogicGame{
     constructor(props){
         super(props);
         this.state = {
@@ -84,6 +85,7 @@ export default class Game extends LogicGame{
     }
 
     render(){
+        console.log('gameState', this.props.gameState)
         let { game, currentTurn, velha, winnerPosition } = this.state;
         let turnIcon = '';
         if(currentTurn === 'x'){
@@ -161,3 +163,8 @@ export default class Game extends LogicGame{
         )
     }
 }
+
+const stateToProps =  store => ({
+    gameState: store.game
+})
+export default connect(stateToProps)(Game);
