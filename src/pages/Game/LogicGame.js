@@ -1,5 +1,5 @@
 import React from 'react';
-import { Close, RadioButtonUnchecked } from "@material-ui/icons";
+import { Option } from "./style";
 
 export default class LogicGame extends React.Component{
     
@@ -95,11 +95,11 @@ export default class LogicGame extends React.Component{
 
             if(currentTurn === 'x'){
                 currentTurn = 'o'
-                game[position].icon = <Close/>;
+                game[position].icon = <Option>X</Option>;
             }
             else{
                 currentTurn = 'x';
-                game[position].icon = <RadioButtonUnchecked/>;
+                game[position].icon = <Option>O</Option>;
             }
             this.setState({game, currentTurn}, () => {
                 this.verifyHit(game)
@@ -197,11 +197,11 @@ export default class LogicGame extends React.Component{
         game[pos].value = currentTurn;
         if(currentTurn === 'x'){
             currentTurn = 'o'
-            game[pos].icon = <Close/>;
+            game[pos].icon = <Option>X</Option>;
         }
         else{
             currentTurn = 'x';
-            game[pos].icon = <RadioButtonUnchecked/>;
+            game[pos].icon = <Option>O</Option>;
         }
         this.setState({game, currentTurn});
     }
