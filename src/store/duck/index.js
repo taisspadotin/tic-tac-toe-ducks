@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
 import game, {
-    Creators as gameActions,
+    Creators as GameActions,
     Types as gameTypes
 } from "./game";
 
@@ -10,7 +10,7 @@ export default combineReducers({
 });
 
 export {
-    gameActions
+    GameActions
 }
 
 export {

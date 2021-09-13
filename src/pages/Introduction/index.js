@@ -1,20 +1,18 @@
 import React  from 'react';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { GameActions } from '../../store/duck';
 import { Button, Intro, Title, Home, Subtitle } from './style';
 import ImageIntro from '../../assets/img/introPic.png';
 import {Link} from 'react-router-dom';
 
-export default class Introduction extends React.Component{
-
+class Introduction extends React.Component{
     constructor(props){
         super(props);
-        this.state = {
-            players: 1
-        }
     }
 
     handlePlayer(val){
-        localStorage.setItem('players', val)
-        this.setState({ players: val });
+        this.props.setPlayers(val);
     }
 
     render(){
@@ -40,3 +38,14 @@ export default class Introduction extends React.Component{
         )
     }
 }
+
+const stateToProps =  store => ({
+    gameState: store.game
+})
+
+const dispatchToProps = dispatch => {
+    const dispatchActions = Object.assign({}, GameActions);
+    return bindActionCreators(dispatchActions, dispatch);
+};
+
+export default connect(stateToProps, dispatchToProps)(Introduction);

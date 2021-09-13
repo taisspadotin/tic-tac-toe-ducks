@@ -71,21 +71,12 @@ class Game extends LogicGame{
             winnerPosition: [],
             valor1: [],
             valor2: [],
-            players: 1
+            players: this.props.gameState.players
         }
         this.handleValue = this.handleValue.bind(this);
     }
 
-    componentDidMount(){
-        var url = window.location.href;
-        var id = url.substring(url.lastIndexOf('/') + 1);
-        if(id === "2"){
-            this.setState({ players : 2 })
-        }
-    }
-
     render(){
-        console.log('gameState', this.props.gameState)
         let { game, currentTurn, velha, winnerPosition } = this.state;
         let turnIcon = '';
         if(currentTurn === 'x'){
@@ -167,4 +158,5 @@ class Game extends LogicGame{
 const stateToProps =  store => ({
     gameState: store.game
 })
+
 export default connect(stateToProps)(Game);

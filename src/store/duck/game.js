@@ -3,13 +3,13 @@ export const Types = {
 };
 
 const INITIAL_STATE = {
-    payers: 2,
+    players: 1,
 };
 
 export default function game(state = INITIAL_STATE, action) {
     switch (action.type) {
       case Types.PLAYERS:
-        return {...state, payers: action.payers};
+        return {...state, players: action.players};
       default:
         return state;
     }
