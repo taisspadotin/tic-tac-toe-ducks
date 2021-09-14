@@ -6,7 +6,7 @@ export default class LogicGame extends React.Component{
     /** Função que verifica se ouve algum acerto 
      * @param {object} game - objeto relacionado as posições do jogo
     */
-    verifyHit(game){
+    verifyHit(game, move = false){
         let { players } = this.state;
         let optionsChecked = game.filter(x => x.checked === true);
         let win = false;
@@ -59,10 +59,11 @@ export default class LogicGame extends React.Component{
             if(optionsChecked.length === game.length){
                 this.setState({velha: true, visibleMessage: true})
             }
-        }
-
-        if(players === 2){
-            this.handleMove();
+            if(players === 1){
+                if(move){
+                    this.setState({canPlay: true}, () => this.handleMove())
+                }
+            }
         }
     }
 
@@ -102,7 +103,7 @@ export default class LogicGame extends React.Component{
                 game[position].icon = <Option>O</Option>;
             }
             this.setState({game, currentTurn}, () => {
-                this.verifyHit(game)
+                this.verifyHit(game, true)
             });   
         }
     }
@@ -110,40 +111,48 @@ export default class LogicGame extends React.Component{
     /** Função responsavel pela movimentação de outra peça */
     handleMove(){
         let { game, currentTurn } = this.state;
-        console.log('game', game)
         let oponente = currentTurn === 'x' ? 'o' : 'x';
+        
         /** verifica se ele vai fazer algum ponto */
-        let posChecked = game.filter(x => x.checked && x.value === currentTurn);
+        let continua = true;
+        continua = this.validaPosicoes(game, [0, 3, 6], currentTurn);
+        if(continua) continua = this.validaPosicoes(game, [1, 4, 7], currentTurn);
+        if(continua) continua = this.validaPosicoes(game, [2, 5, 8], currentTurn);
+        if(continua) continua = this.validaPosicoes(game, [0, 4, 8], currentTurn);
+        if(continua) continua = this.validaPosicoes(game, [6, 4, 2], currentTurn);
+        if(continua) continua = this.validaPosicoes(game, [0, 1, 2], currentTurn);
+        if(continua) continua = this.validaPosicoes(game, [3, 4, 5], currentTurn);
+        if(continua) continua = this.validaPosicoes(game, [6, 7, 8], currentTurn);
         
         /** verifica se o oponente vai fazer ponto */
+        if(continua) continua = this.validaPosicoes(game, [0, 3, 6], oponente);
+        if(continua) continua = this.validaPosicoes(game, [1, 4, 7], oponente);
+        if(continua) continua = this.validaPosicoes(game, [2, 5, 8], oponente);
+        if(continua) continua = this.validaPosicoes(game, [0, 4, 8], oponente);
+        if(continua) continua = this.validaPosicoes(game, [6, 4, 2], oponente);
+        if(continua) continua = this.validaPosicoes(game, [0, 1, 2], oponente);
+        if(continua) continua = this.validaPosicoes(game, [3, 4, 5], oponente);
+        if(continua) continua = this.validaPosicoes(game, [6, 7, 8], oponente);
         
-        
-        this.validaPosicoes(game, [0, 3, 6], oponente);
-        this.validaPosicoes(game, [1, 4, 7], oponente);
-        this.validaPosicoes(game, [2, 5, 8], oponente);
-        this.validaPosicoes(game, [0, 4, 8], oponente);
-        this.validaPosicoes(game, [6, 4, 2], oponente);
-        this.validaPosicoes(game, [0, 1, 2], oponente);
-        this.validaPosicoes(game, [3, 4, 5], oponente);
-        this.validaPosicoes(game, [6, 7, 8], oponente);
-        
-        
-        /*let posCheckedOpo = game.filter(x => x.checked && x.value === oponente);
-        console.log('posCheckedOpo', posCheckedOpo)
-        let val3 = 0;
-        if(posCheckedOpo.lenght > 0){
-            let position = null;
-            if()
-        }*/
-
-        if(!game[4].checked){
+        if(!game[4].checked && continua){
             this.handlePositionCheck(4);
+            continua = false;
         }
-        else if(!game[2].check){
+        else if(!game[2].check && continua){
             this.handlePositionCheck(2);
+            continua = false;
         }
-        else if(!game[8].check){
+        else if(!game[8].check && continua){
             this.handlePositionCheck(8);
+            continua = false;
+        }
+        else{
+            //pega primeira posição
+            if(continua){
+                let valores = game.filter(g => !g.checked);
+                this.handlePositionCheck(valores[0].id);
+                continua = false;
+            }
         }
     }
 
@@ -175,17 +184,24 @@ export default class LogicGame extends React.Component{
 
         if(val.posicao1.valor > 1){
             /** oponente está perto de fazer ponto */
-            if(val.posicao1.pos.indexOf(arrayValores[0]) === -1){
+            if(val.posicao1.pos.indexOf(arrayValores[0]) === -1 && !game[arrayValores[0]].checked){
                 this.handlePositionCheck(arrayValores[0]);
+                this.verifyHit(game);
+                return false;
             }
-            if(val.posicao1.pos.indexOf(arrayValores[1]) === -1){
+            if(val.posicao1.pos.indexOf(arrayValores[1]) === -1 && !game[arrayValores[1]].checked){
                 this.handlePositionCheck(arrayValores[1]);
+                this.verifyHit(game);
+                return false;
             }
-            if(val.posicao1.pos.indexOf(arrayValores[2]) === -1){
+            if(val.posicao1.pos.indexOf(arrayValores[2]) === -1 && !game[arrayValores[2]].checked){
                 this.handlePositionCheck(arrayValores[2]);
+                this.verifyHit(game);
+                return false;
             }
-            return;
         }
+
+        return true;
     }
 
     /** Lida com uma posição checada 

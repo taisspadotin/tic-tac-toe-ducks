@@ -70,7 +70,8 @@ class Game extends LogicGame{
             winnerPosition: [],
             valor1: [],
             valor2: [],
-            players: this.props.gameState.players
+            players: this.props.gameState.players,
+            canPlay: false
         }
         this.handleValue = this.handleValue.bind(this);
     }
